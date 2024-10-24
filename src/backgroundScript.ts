@@ -4,6 +4,9 @@ import { CphSubmitResponse, CphEmptyResponse } from './types';
 import { handleSubmit } from './handleSubmit';
 import log from './log';
 
+// Ensure access to the chrome namespace in case it's not already defined
+declare const chrome: any;
+
 const mainLoop = async () => {
     let cphResponse;
     try {
@@ -31,7 +34,6 @@ const mainLoop = async () => {
 
     if (response.empty) {
         log('Got empty valid response from CPH');
-
         return;
     }
 
@@ -44,4 +46,18 @@ const mainLoop = async () => {
     );
 };
 
+// Run mainLoop at regular intervals while the service worker is alive
 setInterval(mainLoop, config.loopTimeOut);
+
+// Set up Chrome Alarms API to periodically wake the service worker
+chrome.runtime.onInstalled.addListener(() => {
+    // Create an alarm that triggers every minute
+    chrome.alarms.create('keepAlive', { periodInMinutes: 1 });
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === 'keepAlive') {
+        console.log('Service worker woke up by alarm');
+        mainLoop();  // Perform background tasks on wake-up
+    }
+});

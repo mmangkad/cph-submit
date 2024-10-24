@@ -22,7 +22,7 @@ export const getSubmitUrl = (problemUrl: string) => {
     return submitURL;
 };
 
-/** Opens the codefoces submit page and injects script to submit code. */
+/** Opens the codeforces submit page and injects script to submit code. */
 export const handleSubmit = async (
     problemName: string,
     languageId: number,
@@ -80,17 +80,6 @@ export const handleSubmit = async (
 
         if (args.tabId === tab.id) {
             log('Our tab is navigating');
-
-            // const url = new URL(args.url);
-            // const searchParams = new URLSearchParams(url.search);
-
-            // if (searchParams.has("friends")) {
-            //   return;
-            // }
-
-            // log("Navigating to friends mode");
-
-            // chrome.tabs.update(args.tabId, { url: args.url + "?friends=on" });
         }
     }, filter);
 };

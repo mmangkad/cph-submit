@@ -37,7 +37,6 @@ const handleData = (data: ContentScriptData) => {
             'submittedProblemIndex',
         )[0] as HTMLSelectElement;
 
-        // Dont use problemName from data as it includes the contest number.
         const problemName = data.url.split('/problem/')[1];
         problemIndexEl.value = problemName;
     }
